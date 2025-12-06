@@ -1,15 +1,12 @@
 {
-  "name": "location-tracker-pro",
-  "version": "4.0.0",
-  "description": "نظام تتبع ذكي مع دقة محسنة",
+  "name": "location-tracker",
+  "version": "1.0.0",
+  "description": "نظام تتبع المواقع الجغرافية",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2"
-  },
-  "engines": {
-    "node": "18.x"
   }
 }
