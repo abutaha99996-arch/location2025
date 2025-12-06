@@ -1,7 +1,7 @@
 {
-  "name": "gps-real-location",
-  "version": "1.0.0",
-  "description": "نظام تحديد الموقع الحقيقي عبر GPS",
+  "name": "location-tracker-pro",
+  "version": "3.0.0",
+  "description": "نظام تتبع متقدم مع تلجرام وباركود",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,7 +10,8 @@
   "dependencies": {
     "express": "^4.18.2"
   },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  }
+  "engines": {
+    "node": "18.x"
+  },
+  "license": "MIT"
 }
